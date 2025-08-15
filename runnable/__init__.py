@@ -1,8 +1,12 @@
-from typing import Any,Dict,List
+from abc import ABC
+from typing import Any,Dict, Generic,List,TypeVar
 from __future__ import annotations
 
-class Runnable:
-    def invoke(self,input:Any)->Any:
+Input = TypeVar("Input")
+Output = TypeVar("Output")
+
+class Runnable(ABC,Generic[Input,Output]):
+    def invoke(self,input:Input)->Output:
         
         raise NotImplementedError
     
