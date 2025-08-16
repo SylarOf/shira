@@ -1,4 +1,6 @@
-from enum import StrEnum
+PROMPTS = {
+    "todo!"
+    "write some prompts"
 
-class Prompts(StrEnum):
-    NAME = ""
+    "prompt_name" : "content"
+}

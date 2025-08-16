@@ -1,4 +1,5 @@
 from transformers import AutoTokenizer,AutoModelForCausalLM
+from typing import TYPE_CHECKING
 from abc import ABC,abstractmethod
 from kg import KG
 
@@ -29,3 +30,8 @@ class LLMInfer(ABC):
     @abstractmethod
     def get_topk_files_from_questrion(self,questrion,files):
         ""
+
+
+if TYPE_CHECKING:
+    "i don't know paras are"
+    def new_llm_infer(paras)->LLMInfer:...
