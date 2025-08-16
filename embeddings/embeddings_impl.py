@@ -1,18 +1,20 @@
-from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
+from .import Embeddings
 
-class Embeddings(ABC):
-    @abstractmethod
+class EmbeddingsImpl(Embeddings):
+    def __init__(self):
+        ""
+        
     def embed_documents(self,text:list[str])->list[list[float]]:
         ""    
     
-    @abstractmethod
+    
     def embed_query(self,text:str) ->list[float]:
         ""
     
-    @abstractmethod
+    
     def add_topk_files_form_query(self,text:str,files:list[str]) ->list[str]:
         ""
 
-if TYPE_CHECKING:
-    def new_embeddings()->Embeddings:...
+def new_embeddings()->Embeddings:
+    "i don't konw"
+    return EmbeddingsImpl
