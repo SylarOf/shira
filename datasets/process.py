@@ -33,9 +33,9 @@ def split_text(text:str,chunk_size:int = 500,overlap:int = 50):
 
     
 
-def get_topk_files(data,k):
-    urls = data['websites']
-    files = data['files']
+def get_topk_files(each_qa,k):
+    urls = each_qa['websites']
+    files = each_qa['files']
 
     raw_data = []
     for url in urls:
@@ -45,7 +45,7 @@ def get_topk_files(data,k):
         raw_data.append(get_text_from_dir(file))
 
 
-    query_embedding = embed_query(data['question'])
+    query_embedding = embed_query(each_qa['question'])
     documents = []
     for split in raw_data:
         document_emebedding = embed_document(raw_data)
@@ -55,9 +55,14 @@ def get_topk_files(data,k):
 
     documents.sort(key=lambda x: x[score],reverse=True)
 
-    return [file for file, _ in documents[:k]]
+    each_qa['query_text'] = [file for file, _ in documents[:k]]
 
 
-    
-        
+# data's shape is List[list[each_qa]], list for turns question 
+# each_qa should have keys:
+# question, answer, websites for given urls and files for given paths of files
 
+def process_data(data):
+    for qa_list in data:
+        for each_qa in qa_list:
+            get_topk_files(each_qa)

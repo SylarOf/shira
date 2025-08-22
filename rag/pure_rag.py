@@ -17,7 +17,7 @@ class PureRag:
         if question_prompt[-1] != '?':
             question_prompt += '?'
         
-        files_prompt = "files:\n" + "\n".join(each_qa['files'])
+        files_prompt = "files:\n" + "\n".join(each_qa['query_text'])
         user_pure_query = "\n\n".join([files_prompt,question_prompt])
 
 
