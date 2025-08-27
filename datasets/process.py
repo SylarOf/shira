@@ -31,7 +31,8 @@ def split_text(text:str,chunk_size:int = 500,overlap:int = 50):
 
     return chunks
 
-    
+   
+
 
 def get_topk_files(each_qa,k):
     urls = each_qa['websites']
