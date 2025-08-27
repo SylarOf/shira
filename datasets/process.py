@@ -1,4 +1,5 @@
 import requests
+import json
 from bs4 import BeautifulSoup
 from embeddings.embeddings import embed_document,embed_query,cosine_similarity
 
@@ -63,7 +64,39 @@ def get_topk_files(each_qa,k):
 # each_qa should have keys:
 # question, answer, websites for given urls and files for given paths of files
 
-def process_data(data):
-    for qa_list in data:
-        for each_qa in qa_list:
-            get_topk_files(each_qa)
+#def process_data(data):
+#    for qa_list in data:
+#        for each_qa in qa_list:
+#            get_topk_files(each_qa)
+#
+
+def process_jsonl(input_path: str, output_path: str, topk: int = 5):
+    """
+    读取 jsonl，每行是一个 QA 样本：
+    {
+        "question": "...",
+        "answer": ["..."],   # gold答案
+        "files": ["file1.txt", "file2.txt"],
+        "websites": ["https://example.com"],
+        "triplets": ["(A, r, B)", ...]
+    }
+
+    处理后生成新的 jsonl，每行多一个字段 query_text
+    """
+    with open(input_path, "r", encoding="utf-8") as infile, \
+         open(output_path, "w", encoding="utf-8") as outfile:
+        
+        for line in infile:
+            if not line.strip():
+                continue
+            each_qa = json.loads(line)
+
+            # 用你写的召回函数
+            try:
+                query_texts = get_topk_files(each_qa, k=topk)
+                each_qa["query_text"] = query_texts
+            except Exception as e:
+                print(f"[Error] {each_qa.get('question','NO_QUESTION')} -> {e}")
+                each_qa["query_text"] = []
+
+            outfile.write(json.dumps(each_qa, ensure_ascii=False) + "\n")
